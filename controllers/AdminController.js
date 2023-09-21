@@ -4,14 +4,35 @@ exports.getProduct = (req, res, next) => {
   res.status(201).json({ message: "Admin more created successfully" });
 };
 
-exports.postAddProduct = (req, res, next) => {
+// exports.postAddProduct = (req, res, next) => {
+//   const title = req.body.title;
+//   const imageUrl = req.body.imageUrl;
+//   const price = req.body.price;
+//   const description = req.body.description;
+
+//   product
+//     .create({
+//       title: title,
+//       imageUrl: imageUrl,
+//       price: price,
+//       description: description,
+//     })
+//     .then((result) => {
+//       console.log(result);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+exports.addProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
 
-  product
-    .create({
+  req.user
+    .createProduct({
       title: title,
       imageUrl: imageUrl,
       price: price,
@@ -25,28 +46,7 @@ exports.postAddProduct = (req, res, next) => {
     });
 };
 
-exports.postAddProduct = (req, res, next) => {
-  const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
-  const price = req.body.price;
-  const description = req.body.description;
-
-  product
-    .create({
-      title: title,
-      imageUrl: imageUrl,
-      price: price,
-      description: description,
-    })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-exports.postEditProduct = (req, res, next) => {
+exports.editProduct = (req, res, next) => {
   const Id = req.body.Id;
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
@@ -68,7 +68,7 @@ exports.postEditProduct = (req, res, next) => {
     });
 };
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.deleteProduct = (req, res, next) => {
   const Id = req.body.Id;
   product
     .findByPk(Id)

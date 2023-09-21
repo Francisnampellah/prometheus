@@ -13,12 +13,26 @@ exports.getAllProduct = (req, res, next) => {
 
 exports.getSingle = (req, res, next) => {
   const Id = req.params.prodId;
-  product
-    .findByPk(Id)
+
+  req.user
+    .getProducts({ where: { id: Id } })
+    // product
+    //   .findByPk(Id)
     .then((prod) => {
       res.status(201).json(prod);
     })
     .catch((err) => {
       console.log(err);
     });
+
+    // req.user
+    // .getProducts({ where: { id: Id } })
+    // product
+    //   .findByPk(Id)
+    // .then((prod) => {
+    //   res.status(201).json(prod);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
 };
