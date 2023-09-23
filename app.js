@@ -15,10 +15,12 @@ const CartItem = require("./models/cartItem.js");
 const Product = require("./models/product.js");
 const User = require("./models/User.js");
 
-const order = require("./models/order.js");
-const oerderItem = require("./models/orderItem.js");
+// const order = require("./models/order.js");
+// const orderItem = require("./models/orderItem.js");
 const Order = require("./models/order.js");
 const OrderItem = require("./models/orderItem.js");
+
+const auth = require("./route/auth.js");
 
 let PORT = process.env.port || 3000;
 
@@ -34,6 +36,7 @@ app.use((req, res, next) => {
     .catch((err) => console.log(err));
 });
 
+app.use("/auth",auth);
 app.use(shopRoutes);
 app.use("/admin", adminRoutes);
 app.use(error.get404);

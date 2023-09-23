@@ -14,6 +14,9 @@ exports.getAllProduct = (req, res, next) => {
 exports.getSingle = (req, res, next) => {
   const Id = req.params.prodId;
 
+  res.setHeader("Set-Cookie", "loggedIn : true");
+
+
   req.user
     .getProducts({ where: { id: Id } })
 
