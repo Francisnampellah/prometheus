@@ -25,7 +25,7 @@ const auth = require("./route/auth.js");
 
 
 const corsOptions = {
-  origin: "*",
+  origin: "https://damp-oasis-96644-d4ae4b0f0b25.herokuapp.com/",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow credentials (cookies, etc.)
 };
