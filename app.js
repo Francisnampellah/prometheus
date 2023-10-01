@@ -23,16 +23,6 @@ const OrderItem = require("./models/orderItem.js");
 
 const auth = require("./route/auth.js");
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader("Access-Control-Allow-Methods", "GET ,POST ");
-//   res.setHeader("Access-Control-Allow-Headers", "Content-Type ,Authorization");
-//   res.setHeader(
-//     "Access-Control-Allow-Credentials",
-//     "Content-Type ,Authorization"
-//   );
-//   next();
-// });
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -48,7 +38,7 @@ const sessionStore = new SequelizeStore({
 
 // const csrfProtection = csrf();
 
-let PORT = process.env.port || 5000;
+let PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
