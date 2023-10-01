@@ -1,10 +1,9 @@
 const Product = require("../models/product");
-const Order = require("../models/order");
 
 exports.getAllProduct = (req, res, next) => {
   Product.findAll()
     .then((prod) => {
-      res.status(201).json(prod);
+      res.status(201).json({ prod });
     })
     .catch((err) => {
       console.log(err);
@@ -14,12 +13,7 @@ exports.getAllProduct = (req, res, next) => {
 exports.getSingle = (req, res, next) => {
   const Id = req.params.prodId;
 
-  res.setHeader("Set-Cookie", "loggedIn : true");
-
-
-  req.user
-    .getProducts({ where: { id: Id } })
-
+  Product.findOne({ where: { id: Id } })
     .then((prod) => {
       res.status(201).json(prod);
     })
@@ -43,7 +37,7 @@ exports.getUserCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  const ProdId = req.body.Id;
+  const ProdId = req.body.id;
   const qty = parseInt(req.body.qty);
 
   let fetchedCart;
@@ -82,7 +76,7 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.deleteCartItem = (req, res, next) => {
-  const Id = req.body.Id;
+  const Id = req.body.id;
 
   req.user
     .getCart()
@@ -138,4 +132,12 @@ exports.checkoutOrder = (req, res, next) => {
         });
     })
     .catch((err) => console.log(err));
+};
+
+exports.userInfo = (req, res, next) => {
+  res.json(req.user);
+};
+
+const ErroR = (err) => {
+  console.log(err);
 };

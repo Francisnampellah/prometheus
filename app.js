@@ -2,8 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const path = require("path");
-
+const cors = require("cors");
 const sequelize = require("./util/Database.js");
+const isToken = require("./middleware/iaAuth.js");
 
 const app = express();
 const shopRoutes = require("./route/shop");
@@ -12,31 +13,49 @@ const error = require("./controllers/error");
 const Cart = require("./models/cart.js");
 const CartItem = require("./models/cartItem.js");
 
+const session = require("express-session");
 const Product = require("./models/product.js");
 const User = require("./models/User.js");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
-// const order = require("./models/order.js");
-// const orderItem = require("./models/orderItem.js");
 const Order = require("./models/order.js");
 const OrderItem = require("./models/orderItem.js");
 
 const auth = require("./route/auth.js");
 
-let PORT = process.env.port || 3000;
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "GET ,POST ");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type ,Authorization");
+//   res.setHeader(
+//     "Access-Control-Allow-Credentials",
+//     "Content-Type ,Authorization"
+//   );
+//   next();
+// });
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow credentials (cookies, etc.)
+};
+
+app.use(cors(corsOptions));
+
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+});
+
+// const csrfProtection = csrf();
+
+let PORT = process.env.port || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  User.findByPk(1)
-    .then((user) => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => console.log(err));
-});
+// app.use(isToken.whoUser);
 
-app.use("/auth",auth);
+app.use("/auth", auth);
 app.use(shopRoutes);
 app.use("/admin", adminRoutes);
 app.use(error.get404);
@@ -55,6 +74,7 @@ Cart.belongsTo(User);
 
 Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
+// Cart.hasMany(Product);
 
 //Order - User
 Order.belongsTo(User);
@@ -74,14 +94,17 @@ sequelize
   })
   .then((user) => {
     if (!user) {
-      return User.create({ name: "Jovan", email: "jovan267@namps.com" });
+      return User.create({
+        name: "Novus Prime",
+        email: "bnampellah1@gmail.com",
+        password:
+          "$2a$12$YPdgY2BHoVr.nGrHDEyEgeEYrPUku3CCsFscp6wXddSE.Lpm17RyS",
+        role: 1,
+      });
     }
     return user;
   })
-  .then((user) => {
-    return user.createCart();
-  })
-  .then((cart) => {
+  .then((res) => {
     app.listen(PORT);
   })
   .catch((error) => {
