@@ -25,7 +25,7 @@ const auth = require("./route/auth.js");
 
 
 const corsOptions = {
-  origin: "https://e-duka-five.vercel.app/",
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow credentials (cookies, etc.)
 };
