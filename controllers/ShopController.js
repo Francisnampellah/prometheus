@@ -3,7 +3,7 @@ const Product = require("../models/product");
 exports.getAllProduct = (req, res, next) => {
   Product.findAll()
     .then((prod) => {
-      res.status(201).json({ prod });
+      res.status(201).json( prod );
     })
     .catch((err) => {
       console.log(err);
@@ -78,15 +78,21 @@ exports.postCart = (req, res, next) => {
 exports.deleteCartItem = (req, res, next) => {
   const Id = req.body.id;
 
+  let Kart;
   req.user
     .getCart()
     .then((cart) => {
+      Kart = cart;
       return cart.getProducts({ where: { id: Id } });
     })
     .then((prod) => {
       return prod[0].cartItem.destroy();
     })
-    .then(console.log("Cart Destroyed"))
+    .then((end) => {
+      // const returned = Kart.getProducts();
+      // console.log(returned);
+      res.status(200);
+    })
     .catch((err) => {
       console.log(err);
     });
