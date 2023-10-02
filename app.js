@@ -22,9 +22,9 @@ const Order = require("./models/order.js");
 const OrderItem = require("./models/orderItem.js");
 
 const auth = require("./route/auth.js");
-
+// "https://e-duka-five.vercel.app"
 const corsOptions = {
-  origin: "https://e-duka-five.vercel.app",
+  origin: "http://localhost:3000/",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow credentials (cookies, etc.)
 };
