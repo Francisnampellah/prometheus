@@ -43,7 +43,10 @@ exports.addProduct = (req, res, next) => {
       description: description,
     })
     .then((result) => {
-      console.log(result);
+      return product.findAll();
+    })
+    .then((products) => {
+      res.status(200).json(products);
     })
     .catch((err) => {
       console.log(err);
@@ -69,7 +72,12 @@ exports.editProduct = (req, res, next) => {
         prod.imageUrl = imageUrl;
         return prod.save();
       })
-      .then(console.log("Updates"))
+      .then((result) => {
+        return product.findAll();
+      })
+      .then((products) => {
+        res.status(200).json(products);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -91,7 +99,12 @@ exports.deleteProduct = (req, res, next) => {
       .then((prod) => {
         return prod.destroy();
       })
-      .then(console.log("Destroyed"))
+      .then((result) => {
+        return product.findAll();
+      })
+      .then((products) => {
+        res.status(200).json(products);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -121,7 +134,7 @@ exports.signUpUser = (req, res, next) => {
   const userEmail = req.body.email;
   const password = req.body.password;
 
-  console.log('reached here')
+  console.log("reached here");
 
   const UserRole = req?.user?.role;
 

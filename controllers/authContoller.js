@@ -48,21 +48,27 @@ exports.SignUp = (req, res, next) => {
 
   User.findAll({ where: { email: userEmail } })
     .then((Existemail) => {
-      console.log(Existemail);
+      // Existemail.length > 0 ? res.status(403).json({ mesage: "No User Exist" }) : return bcrypt.hash(password, 12)
+
       if (Existemail.length > 0) {
-        res.status(201).json({ message: "User Exist" });
+        res.status(409).json({ message: "User already existed" });
+      } else {
+        return bcrypt.hash(password, 12);
       }
-      return bcrypt.hash(password, 12);
     })
     .then((passcode) => {
-      User.create({
+      return User.create({
         name: Username,
         email: userEmail,
         password: passcode,
         role: 2,
-      }).then((user) => {
-        user.createCart();
-      });
+      })
+        .then((user) => {
+          return user.createCart();
+        })
+        .then((cart) => {
+          res.status(201).json({ message: "User registered successfully" });
+        });
     })
     .catch((err) => {
       console.log(err);

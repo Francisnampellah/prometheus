@@ -1,9 +1,10 @@
+const product = require("../models/product");
 const Product = require("../models/product");
 
 exports.getAllProduct = (req, res, next) => {
   Product.findAll()
     .then((prod) => {
-      res.status(201).json( prod );
+      res.status(201).json(prod);
     })
     .catch((err) => {
       console.log(err);
@@ -69,6 +70,15 @@ exports.postCart = (req, res, next) => {
         },
       });
     })
+    .then((result) => {
+      return req.user.getCart();
+    })
+    .then((Products) => {
+      return Products.getProducts();
+    })
+    .then((cartProduct) => {
+      res.status(200).json(cartProduct);
+    })
     .catch((err) => console.log(err))
     .catch((err) => {
       console.log(err);
@@ -77,7 +87,6 @@ exports.postCart = (req, res, next) => {
 
 exports.deleteCartItem = (req, res, next) => {
   const Id = req.body.id;
-
   let Kart;
   req.user
     .getCart()
@@ -86,12 +95,15 @@ exports.deleteCartItem = (req, res, next) => {
       return cart.getProducts({ where: { id: Id } });
     })
     .then((prod) => {
-      return prod[0].cartItem.destroy();
+      // Kart.getProducts()
+
+      prod[0].cartItem.destroy();
+      return Kart.getProducts();
     })
-    .then((end) => {
-      // const returned = Kart.getProducts();
-      // console.log(returned);
-      res.status(200);
+    .then((Products) => {
+      console.log("returned Cart");
+      console.log(Products);
+      res.status(200).json(Products);
     })
     .catch((err) => {
       console.log(err);
@@ -104,7 +116,6 @@ exports.getUserOrder = (req, res, next) => {
     .then((order) => {
       res.status(200).json(order);
     })
-
     .catch((err) => {
       console.log(err);
     });
